@@ -1,22 +1,24 @@
-const path = require("path");
+const path = require('path');
 
 module.exports = {
   context: __dirname,
-  entry: "./src/client/App.jsx",
+  entry: './src/client/ClientApp.jsx',
   output: {
-    path: path.join(__dirname, "public"),
-    filename: "bundle.js"
+    path: path.join(__dirname, 'public'),
+    filename: 'bundle.js',
+    publicPath: '/public/'
   },
-  devtool: "inline-source-map",
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
         test: /\.jsx?$/,
-        loader: "babel-loader"
+        loader: 'babel-loader',
+        exclude: /node_modules/
       }
     ]
   },
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: ['.js', '.jsx']
   }
 };
