@@ -31,7 +31,7 @@ const Button = styled.button`
   margin-top: 1rem;
 `;
 
-class App extends Component {
+class Login extends Component {
   constructor() {
     super();
 
@@ -57,6 +57,7 @@ class App extends Component {
       window.location.href = '/doSomething';
     }
   }
+
   render() {
     return (
       <Wrapper onSubmit={this.handleSubmit}>
@@ -66,13 +67,13 @@ class App extends Component {
         </Label>
         {this.state.nameMessage}
         <Label>
-          Age:
-          <Input type="number" name="age" required />
+          Password:
+          <Input type="number" name="login" required />
         </Label>
-        <Button type="Submit">Submit</Button>
+        <Button type="Submit">Login</Button>
       </Wrapper>
     );
   }
 }
 
-export default App;
+export default Login;
