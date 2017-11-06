@@ -56,7 +56,7 @@ class Signup extends Component {
     } else {
       this.setState({ passwordMessage: '' });
     }
-    axios.post('/send', data);
+    axios.post('/signup', data);
   }
   render() {
     return (
