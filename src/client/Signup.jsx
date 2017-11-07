@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 
 const Wrapper = styled.form`
   margin-right: auto;
@@ -21,7 +22,8 @@ class Signup extends Component {
   state = {
     nameMessage: '',
     emailMessage: '',
-    passwordMessage: ''
+    passwordMessage: '',
+    redirect: ''
   };
 
   componentWillMount() {
@@ -56,27 +58,31 @@ class Signup extends Component {
     } else {
       this.setState({ passwordMessage: '' });
     }
-    axios.post('/signup', data);
+    axios
+      .post('/signup', data)
+      .then(this.setState({ redirect: <Redirect to="/login" /> }))
+      .catch(this.setState({ redirect: <Redirect to="/404" /> }));
   }
   render() {
     return (
       <Wrapper onSubmit={this.handleSubmit}>
-        <label htmlFor style={labelStyle}>
+        <label style={labelStyle}>
           Name:
           <input type="text" name="name" />
           {this.state.nameMessage}
         </label>
-        <label htmlFor style={labelStyle}>
+        <label style={labelStyle}>
           Email:
           <input type="email" name="email" />
           {this.state.emailMessage}
         </label>
-        <label htmlFor style={labelStyle}>
+        <label style={labelStyle}>
           Password:
           <input type="password" name="password" />
         </label>
         {this.state.passwordMessage}
         <button type="Submit">Submit</button>
+        {this.state.redirect}
       </Wrapper>
     );
   }
