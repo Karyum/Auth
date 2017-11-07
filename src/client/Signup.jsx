@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
 
 const Wrapper = styled.form`
   margin-right: auto;
@@ -23,7 +22,7 @@ class Signup extends Component {
     nameMessage: '',
     emailMessage: '',
     passwordMessage: '',
-    redirect: ''
+    requestMessage: ''
   };
 
   componentWillMount() {
@@ -39,29 +38,36 @@ class Signup extends Component {
       password: password.value
     };
 
-    if (!data.name.trim() || !/[a-zA-Z]/.test(data.name)) {
-      this.setState({ nameMessage: 'Invalid name' });
-    } else {
-      this.setState({ nameMessage: '' });
+    if (!data.name.trim() || !/[a-z]/.test(data.name)) {
+      return this.setState({ nameMessage: 'lowercase english only' });
     }
+    this.setState({ nameMessage: '' });
 
     if (!data.email.trim()) {
-      this.setState({ emailMessage: 'Please add an email' });
-    } else {
-      this.setState({ emailMessage: '' });
+      return this.setState({ emailMessage: 'Please add an email' });
     }
+    this.setState({ emailMessage: '' });
 
     if (data.password.length < 8) {
-      this.setState({ passwordMessage: 'The password must be atleast 8 characters' });
+      return this.setState({ passwordMessage: 'The password must be atleast 8 characters' });
     } else if (!data.password.trim()) {
-      this.setState({ passwordMessage: 'Must not contain empty spaces' });
-    } else {
-      this.setState({ passwordMessage: '' });
+      return this.setState({ passwordMessage: 'Must not contain empty spaces' });
     }
-    axios
+    this.setState({ passwordMessage: '' });
+
+    return axios
       .post('/signup', data)
-      .then(this.setState({ redirect: <Redirect to="/login" /> }))
-      .catch(this.setState({ redirect: <Redirect to="/404" /> }));
+      .then(res => {
+        if (res.data) {
+          this.setState({ requestMessage: res.data });
+        } else {
+          window.location.href = '/login';
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        window.location.href = '/404';
+      });
   }
   render() {
     return (
@@ -82,7 +88,7 @@ class Signup extends Component {
         </label>
         {this.state.passwordMessage}
         <button type="Submit">Submit</button>
-        {this.state.redirect}
+        {this.state.requestMessage}
       </Wrapper>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import Axios from 'axios';
+import axios from 'axios';
 
 const Label = styled.label`
   margin-top: 1rem;
@@ -36,7 +36,8 @@ class Login extends Component {
     super();
 
     this.state = {
-      nameMessage: ''
+      nameMessage: '',
+      loginMessage: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -44,17 +45,25 @@ class Login extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const englishChar = /[a-zA-Z]/;
-    const { name, age } = event.target.elements;
+    const { username, password } = event.target.elements;
     const data = {
-      name: name.value,
-      age: age.value
+      username: username.value,
+      password: password.value
     };
 
-    if (!englishChar.test(data.name)) {
+    if (!englishChar.test(data.username)) {
       this.setState({ nameMessage: <NameMessage>English characters only</NameMessage> });
     } else {
-      Axios.post('/add-data', data);
-      window.location.href = '/doSomething';
+      axios
+        .post('/login', data)
+        .then(res => {
+          if (res.data.error) {
+            this.setState({ loginMessage: res.data.error });
+          } else {
+            window.location.href = '/';
+          }
+        })
+        .catch(this.setState({ loginMessage: 'Something went wrong please try again' }));
     }
   }
 
@@ -63,14 +72,15 @@ class Login extends Component {
       <Wrapper onSubmit={this.handleSubmit}>
         <Label>
           Name:
-          <Input type="text" name="name" required />
+          <Input type="text" name="username" required />
         </Label>
         {this.state.nameMessage}
         <Label>
           Password:
-          <Input type="number" name="login" required />
+          <Input type="password" name="password" required />
         </Label>
         <Button type="Submit">Login</Button>
+        {this.state.loginMessage}
       </Wrapper>
     );
   }

@@ -11,8 +11,13 @@ module.exports = ({ body }, res) => {
       password: result
     });
     user.save(error => {
-      if (error) res.send(error);
-      else res.send('success');
+      if (error) {
+        if (error.message.indexOf('email') > -1) {
+          res.send('The email already exists in our database');
+        } else if (error.message.indexOf('username') > -1) {
+          res.send('The username already exists in our database');
+        }
+      } else res.send();
     });
   });
 };
