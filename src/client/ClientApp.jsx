@@ -1,22 +1,21 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Router, Route, Switch } from 'react-router-dom';
-import createBrowserHistory from 'history/createBrowserHistory';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Login from './Login';
 import FourOhFour from './404';
 import Signup from './Signup';
-
-const history = createBrowserHistory();
+import Home from './Home';
 
 const ClientApp = () => (
-  <Router history={history}>
+  <BrowserRouter>
     <Switch>
+      <Route exact path="/" component={Home} />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/login" component={Login} />
       <Route component={FourOhFour} />
     </Switch>
-  </Router>
+  </BrowserRouter>
 );
 
 render(<ClientApp />, document.getElementById('app'));
