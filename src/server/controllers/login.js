@@ -12,10 +12,10 @@ module.exports = async ({ body }, res) => {
       res.send({ error: 'Wrong password' });
     } else {
       res.cookie('token', password, { maxAge: 604800000 });
+      res.cookie('username', user[0].username, { maxAge: 604800000 });
       res.send({});
     }
   } catch (err) {
-    console.log(err);
     res.send({ error: 'Something went wrong please try again' });
   }
 };
