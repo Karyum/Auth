@@ -29,7 +29,7 @@ class Signup extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
     const { name, email, password } = event.target.elements;
     const data = {
@@ -54,20 +54,16 @@ class Signup extends Component {
       return this.setState({ passwordMessage: 'Must not contain empty spaces' });
     }
     this.setState({ passwordMessage: '' });
-
-    return axios
-      .post('/signup', data)
-      .then(res => {
-        if (res.data) {
-          this.setState({ requestMessage: res.data });
-        } else {
-          window.location.href = '/login';
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        window.location.href = '/404';
-      });
+    try {
+      const res = axios.post('/signup', data);
+      if (res.data) {
+        this.setState({ requestMessage: res.data });
+      } else {
+        window.location.href = '/login';
+      }
+    } catch (err) {
+      window.location.href = '/404';
+    }
   }
   render() {
     return (

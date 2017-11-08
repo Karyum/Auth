@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Label = styled.label`
   margin-top: 1rem;
@@ -63,7 +64,7 @@ class Login extends Component {
             window.location.href = '/';
           }
         })
-        .catch(this.setState({ loginMessage: 'Something went wrong please try again' }));
+        .catch(() => this.setState({ loginMessage: 'Something went wrong please try again' }));
     }
   }
 
@@ -81,6 +82,7 @@ class Login extends Component {
         </Label>
         <Button type="Submit">Login</Button>
         {this.state.loginMessage}
+        <Link to="/signup">Signup</Link>
       </Wrapper>
     );
   }
