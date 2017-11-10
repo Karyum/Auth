@@ -50,8 +50,6 @@ class Signup extends Component {
     }
     this.setState({ emailMessage: '' });
 
-
-
     if (data.password.length < 8) {
       return this.setState({ passwordMessage: 'The password must be atleast 8 characters' });
     } else if (!data.password.trim()) {
@@ -60,12 +58,12 @@ class Signup extends Component {
     this.setState({ passwordMessage: '' });
 
     if (data.password !== data.confirmPassword) {
-      return this.setState({ confirmMessage: 'The password is not the same' })
+      return this.setState({ confirmMessage: 'The password is not the same' });
     }
-    this.setState({ confirmMessage: ''})
+    this.setState({ confirmMessage: '' });
 
     try {
-      const res = axios.post('/signup', data);
+      const res = await axios.post('/signup', data);
       if (res.data) {
         this.setState({ requestMessage: res.data });
       } else {
@@ -98,7 +96,9 @@ class Signup extends Component {
           <input type="password" name="confirmPassword" />
         </label>
         {this.state.confirmMessage}
-        <button type="Submit" style={{marginTop:'2rem' }}>Submit</button>
+        <button type="Submit" style={{ marginTop: '2rem' }}>
+          Submit
+        </button>
         {this.state.requestMessage}
       </Wrapper>
     );
