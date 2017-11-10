@@ -22,7 +22,8 @@ class Signup extends Component {
     nameMessage: '',
     emailMessage: '',
     passwordMessage: '',
-    requestMessage: ''
+    requestMessage: '',
+    confirmMessage: ''
   };
 
   componentWillMount() {
@@ -31,11 +32,12 @@ class Signup extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const { name, email, password } = event.target.elements;
+    const { name, email, password, confirmPassword } = event.target.elements;
     const data = {
       name: name.value,
       email: email.value,
-      password: password.value
+      password: password.value,
+      confirmPassword: confirmPassword.value
     };
 
     if (!data.name.trim() || !/[a-z]/.test(data.name)) {
@@ -48,12 +50,20 @@ class Signup extends Component {
     }
     this.setState({ emailMessage: '' });
 
+
+
     if (data.password.length < 8) {
       return this.setState({ passwordMessage: 'The password must be atleast 8 characters' });
     } else if (!data.password.trim()) {
       return this.setState({ passwordMessage: 'Must not contain empty spaces' });
     }
     this.setState({ passwordMessage: '' });
+
+    if (data.password !== data.confirmPassword) {
+      return this.setState({ confirmMessage: 'The password is not the same' })
+    }
+    this.setState({ confirmMessage: ''})
+
     try {
       const res = axios.post('/signup', data);
       if (res.data) {
@@ -83,7 +93,12 @@ class Signup extends Component {
           <input type="password" name="password" />
         </label>
         {this.state.passwordMessage}
-        <button type="Submit">Submit</button>
+        <label style={labelStyle}>
+          Confirm password:
+          <input type="password" name="confirmPassword" />
+        </label>
+        {this.state.confirmMessage}
+        <button type="Submit" style={{marginTop:'2rem' }}>Submit</button>
         {this.state.requestMessage}
       </Wrapper>
     );
