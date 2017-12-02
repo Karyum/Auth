@@ -18,3 +18,12 @@ export function logoutUser() {
     });
   };
 }
+
+export function loginUser(data) {
+  return dispatch => {
+    dispatch({
+      type: FETCH_USER,
+      payload: axios.post('/login', data)
+    });
+  };
+}
