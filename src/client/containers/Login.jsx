@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { loginUser } from '../actions/auth_actions';
 
 const Label = styled.label`
   margin-top: 1rem;
@@ -43,6 +44,12 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentWillMount() {
+    if (this.props.user.error) {
+      this.setState({ loginMessage: 'Something went wrong' });
+    }
+  }
+
   async handleSubmit(event) {
     event.preventDefault();
     const englishChar = /[a-zA-Z]/;
@@ -54,32 +61,24 @@ class Login extends Component {
 
     if (!englishChar.test(postData.username)) {
       this.setState({
-        nameMessage: <NameMessage>English characters only</NameMessage>
+        nameMessage: 'English characters only'
       });
     } else {
-      try {
-        const { data } = await axios.post('/login', postData);
-        if (data.error) {
-          this.setState({ loginMessage: data.error });
-        } else {
-          window.location.href = '/';
-        }
-      } catch (err) {
-        this.setState({
-          loginMessage: 'Something went wrong please try again'
-        });
-      }
+      this.props.loginUser(postData);
     }
   }
 
   render() {
+    if (this.props.user.dataFetched) {
+      return <Redirect to="/" />;
+    }
     return (
       <Wrapper onSubmit={this.handleSubmit}>
         <Label>
           Name:
           <Input type="text" name="username" required />
         </Label>
-        {this.state.nameMessage}
+        <NameMessage>{this.state.nameMessage}</NameMessage>
         <Label>
           Password:
           <Input type="password" name="password" required />
@@ -94,4 +93,11 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = {
+  loginUser
+};
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

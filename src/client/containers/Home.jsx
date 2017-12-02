@@ -38,24 +38,13 @@ const StyledButton = styled.button`
 `;
 
 class Home extends Component {
-  async componentDidMount() {
-    await this.props.fetchUser();
-    console.log(this.props.user);
-    // try {
-    //   const { data } = await axios.get('/verify');
-    //   if (data.error) {
-    //     return this.setState({ message: 'Login mate', sign: false });
-    //   }
-    //   return this.setState({ user: data, message: 'Welcome ', sign: true });
-    // } catch (err) {
-    //   return this.setState({ message: 'Login mate', sign: false });
-    // }
+  componentDidMount() {
+    this.props.fetchUser();
   }
 
   render() {
     let signButton;
     let message;
-    console.log(this.props.user);
     if (this.props.user.data.error || this.props.user.loggedOut) {
       message = 'Login Mate';
       signButton = (
@@ -64,7 +53,6 @@ class Home extends Component {
         </ButtonWrapper>
       );
     } else {
-      console.log(1);
       message = 'Welcome';
       signButton = (
         <ButtonWrapper>
@@ -104,6 +92,6 @@ Home.propTypes = {
   }).isRequired
 };
 
-const mapStateToPros = state => ({ user: state.user });
+const mapStateToProps = state => ({ user: state.user });
 
-export default connect(mapStateToPros, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
