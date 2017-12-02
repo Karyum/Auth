@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const users = require('../../../schema.js');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 module.exports = async ({ body }, res) => {
@@ -12,12 +13,12 @@ module.exports = async ({ body }, res) => {
       if (!comparision) {
         res.send({ error: 'Wrong password' });
       } else {
-        res.cookie('username', user[0].username, { maxAge: 604800000 });
+        const token = await jwt.sign(user[0].username, process.env.JWT_SECRET);
+        res.cookie('username', token, { maxAge: 604800000 });
         res.send({});
       }
     }
   } catch (err) {
-    console.log(err);
     res.send({ error: 'Something went wrong please try again' });
   }
 };
