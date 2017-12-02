@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import Login from './Login';
+import Login from '../containers/Login';
 import FourOhFour from './404';
 import Signup from './Signup';
-import Home from './Home';
+import Home from '../containers/Home';
 
 const ClientApp = () => (
   <BrowserRouter>

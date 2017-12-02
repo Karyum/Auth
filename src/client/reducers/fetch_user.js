@@ -9,8 +9,10 @@ import {
 
 const initialState = {
   data: {},
+  dataFetched: false,
   error: false,
-  isFetching: false
+  isFetching: false,
+  loggedOut: true
 };
 
 const fetchUserReducer = (state = initialState, action) => {
@@ -18,7 +20,11 @@ const fetchUserReducer = (state = initialState, action) => {
     case FETCH_USER_PENDING:
       return { ...state, isFetching: true };
     case FETCH_USER_FULFILLED:
-      return { ...state, data: action.payload.data };
+      return {
+        ...state,
+        data: action.payload.data,
+        dataFetched: true
+      };
     case FETCH_USER_REJECTED:
       return { ...state, isFetching: false, error: true };
     case LOGOUT_USER_PENDING:
