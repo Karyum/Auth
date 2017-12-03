@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import { loginUser } from '../actions/auth_actions';
 
 const Label = styled.label`
@@ -16,9 +18,6 @@ const NameMessage = styled.span`
   font-size: 1rem;
 `;
 
-const Input = styled.input`
-  display: inline-block;
-`;
 const Wrapper = styled.form`
   width: 50%;
   margin-right: auto;
@@ -45,7 +44,6 @@ class Login extends Component {
   }
 
   componentWillMount() {
-    console.log(this.props.user.error);
     if (this.props.user.error) {
       return this.setState({ loginMessage: 'Something went wrong' });
     }
@@ -71,21 +69,19 @@ class Login extends Component {
   }
 
   render() {
-    console.log('FETCHED', this.props.user.dataFetched);
     if (this.props.user.dataFetched) {
-      console.log(12);
       return <Redirect to="/" />;
     }
     return (
       <Wrapper onSubmit={this.handleSubmit}>
         <Label>
           Name:
-          <Input type="text" name="username" required />
+          <input type="text" name="username" required />
         </Label>
         <NameMessage>{this.state.nameMessage}</NameMessage>
         <Label>
           Password:
-          <Input type="password" name="password" required />
+          <input type="password" name="password" required />
         </Label>
         <Button type="Submit">Login</Button>
         {this.state.loginMessage}
@@ -96,6 +92,14 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  user: PropTypes.shape({
+    dataFetched: PropTypes.bolean,
+    error: PropTypes.bolean,
+  }).isRequired,
+  loginUser: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = {
   loginUser,

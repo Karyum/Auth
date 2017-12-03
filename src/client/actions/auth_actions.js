@@ -19,7 +19,6 @@ export function logoutUser() {
 }
 
 export function loginUser(data) {
-  console.log(2);
   return dispatch => {
     dispatch({
       type: LOGIN_USER,
