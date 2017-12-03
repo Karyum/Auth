@@ -4,7 +4,7 @@ import {
   FETCH_USER_REJECTED,
   LOGOUT_USER_PENDING,
   LOGOUT_USER_FULFILLED,
-  LOGOUT_USER_REJECTED
+  LOGOUT_USER_REJECTED,
 } from '../constants';
 
 const initialState = {
@@ -12,7 +12,7 @@ const initialState = {
   dataFetched: false,
   error: false,
   isFetching: false,
-  loggedOut: true
+  loggedOut: true,
 };
 
 const fetchUserReducer = (state = initialState, action) => {
@@ -23,7 +23,8 @@ const fetchUserReducer = (state = initialState, action) => {
       return {
         ...state,
         data: action.payload.data,
-        dataFetched: true
+        dataFetched: true,
+        loggedOut: false,
       };
     case FETCH_USER_REJECTED:
       return { ...state, isFetching: false, error: true };
