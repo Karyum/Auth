@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER, LOGOUT_USER } from '../constants';
+import { FETCH_USER, LOGOUT_USER, LOGIN_USER } from '../constants';
 
 export function fetchUser() {
   return dispatch =>
@@ -22,7 +22,7 @@ export function loginUser(data) {
   console.log(2);
   return dispatch => {
     dispatch({
-      type: FETCH_USER,
+      type: LOGIN_USER,
       payload: axios.post('/login', data),
     });
   };

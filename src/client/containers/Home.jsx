@@ -79,7 +79,7 @@ class Home extends Component {
 
 const mapDispatchToProps = {
   fetchUser,
-  logoutUser
+  logoutUser,
 };
 
 Home.propTypes = {
@@ -88,8 +88,8 @@ Home.propTypes = {
   user: PropTypes.shape({
     data: PropTypes.object.isRequired,
     error: PropTypes.boolean,
-    loggedOut: PropTypes.boolean
-  }).isRequired
+    loggedOut: PropTypes.boolean,
+  }).isRequired,
 };
 
 const mapStateToProps = state => ({ user: state.user });

@@ -39,15 +39,17 @@ class Login extends Component {
 
     this.state = {
       nameMessage: '',
-      loginMessage: ''
+      loginMessage: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillMount() {
+    console.log(this.props.user.error);
     if (this.props.user.error) {
-      this.setState({ loginMessage: 'Something went wrong' });
+      return this.setState({ loginMessage: 'Something went wrong' });
     }
+    return 1;
   }
 
   async handleSubmit(event) {
@@ -56,12 +58,12 @@ class Login extends Component {
     const { username, password } = event.target.elements;
     const postData = {
       username: username.value,
-      password: password.value
+      password: password.value,
     };
 
     if (!englishChar.test(postData.username)) {
       this.setState({
-        nameMessage: 'English characters only'
+        nameMessage: 'English characters only',
       });
     } else {
       this.props.loginUser(postData);
@@ -69,7 +71,9 @@ class Login extends Component {
   }
 
   render() {
+    console.log('FETCHED', this.props.user.dataFetched);
     if (this.props.user.dataFetched) {
+      console.log(12);
       return <Redirect to="/" />;
     }
     return (
@@ -94,10 +98,10 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = {
-  loginUser
+  loginUser,
 };
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.loggedinUser,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
