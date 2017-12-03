@@ -2,28 +2,28 @@ import axios from 'axios';
 import { FETCH_USER, LOGOUT_USER } from '../constants';
 
 export function fetchUser() {
-  return dispatch => {
+  return dispatch =>
     dispatch({
       type: FETCH_USER,
-      payload: axios.get('/verify')
+      payload: axios.get('/verify'),
     });
-  };
 }
 
 export function logoutUser() {
   return dispatch => {
     dispatch({
       type: LOGOUT_USER,
-      payload: axios.get('/logout')
+      payload: axios.get('/logout'),
     });
   };
 }
 
 export function loginUser(data) {
+  console.log(2);
   return dispatch => {
     dispatch({
       type: FETCH_USER,
-      payload: axios.post('/login', data)
+      payload: axios.post('/login', data),
     });
   };
 }
